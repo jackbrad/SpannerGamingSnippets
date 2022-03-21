@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/bradham/Desktop/SpannerGamingSnippets/SpannerGamingSnippets/SpannerGamingSnippets.csproj": {}
+  },
+  "projects": {
+    "/Users/bradham/Desktop/SpannerGamingSnippets/SpannerGamingSnippets/SpannerGamingSnippets.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/bradham/Desktop/SpannerGamingSnippets/SpannerGamingSnippets/SpannerGamingSnippets.csproj",
+        "projectName": "SpannerGamingSnippets",
+        "projectPath": "/Users/bradham/Desktop/SpannerGamingSnippets/SpannerGamingSnippets/SpannerGamingSnippets.csproj",
+        "packagesPath": "/Users/bradham/.nuget/packages/",
+        "outputPath": "/Users/bradham/Desktop/SpannerGamingSnippets/SpannerGamingSnippets/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/bradham/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.56.0, )"
+            },
+            "Google.Cloud.Spanner.Data": {
+              "target": "Package",
+              "version": "[3.13.0, )"
+            },
+            "Grpc.Core.Api": {
+              "target": "Package",
+              "version": "[2.44.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
