@@ -1,28 +1,25 @@
 ﻿
+using System;
+using System.Threading.Tasks;
+
+//added assemblies for code example
 using Google.Cloud.Spanner.Data;
 using Grpc.Core;
 using Grpc.Auth;
 using Google.Apis.Auth.OAuth2;
 
-using System;
-using System.Threading.Tasks;
 
-
+//setup connection string to spanner
 string projectId = "bitfoon-dev";
 string instanceId = "bitfoon-dev";
 string databaseId = "bitfoon";
 string credentialFile = "/Users/bradham/downloads/bitfoon-dev-34cce5fcde89.json";
 string connectionString =$"Data Source=projects/{projectId}/instances/{instanceId}/databases/{databaseId}";
 
-var builder = new SpannerConnectionStringBuilder();
-builder.CredentialFile = credentialFile;
-builder.ConnectionString = connectionString;
-
 //lets auth with a credential file. 
 GoogleCredential googleCredential = GoogleCredential
     .FromFile(credentialFile);
 var credentials = googleCredential.ToChannelCredentials();
-
 
 // Create connection to Cloud Spanner.
 using (var connection = new SpannerConnection(connectionString,credentials))
