@@ -49,6 +49,14 @@
             "Grpc.Core.Api": {
               "target": "Package",
               "version": "[2.44.0, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.5.43, )"
+            },
+            "newtonsoft.json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             }
           },
           "imports": [

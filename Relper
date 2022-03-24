@@ -1,0 +1,34 @@
+using StackExchange.Redis;
+using Google.Cloud.Spanner.Data;
+using Newtonsoft.Json;
+
+namespace SpannerGamingSnippets
+{
+    public class Relper
+    {
+        private string redisServerEndpoint = "localhost";
+        private  Lazy<ConnectionMultiplexer> lazyConnection;
+
+        public Relper(string RedisServerEndpoint){
+            
+            this.redisServerEndpoint = RedisServerEndpoint;
+            this.lazyConnection = CreateConnection();
+
+        }
+        public  ConnectionMultiplexer Connection
+        {
+            get
+            {
+                return lazyConnection.Value;
+            }
+        }
+
+        private  Lazy<ConnectionMultiplexer> CreateConnection()
+        {
+            return new Lazy<ConnectionMultiplexer>(() =>
+            {
+                return ConnectionMultiplexer.Connect(this.redisServerEndpoint);
+            });
+        }
+    }
+}
