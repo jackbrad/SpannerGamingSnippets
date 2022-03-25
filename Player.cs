@@ -1,12 +1,16 @@
 using System;
-namespace SpannerGamingSnippets
+using Newtonsoft.Json;
+
+
+public class Player
 {
-    public class Player
-    {
-        public string PlayerUUID { get; set; }
-        public string Name { get; set; }
-        public string PictureURL { get; set; }
-        public string Location { get; set; }
-        public string Preferences { get; set; }
-    }
+    public string PlayerUUID { get; set; }
+    public string Name { get; set; }
+    public string PictureURL { get; set; }
+    public string    Location { get; set; }
+    
+   [JsonProperty()]
+   public string Preferences { get; set; }    
+    
 }
+

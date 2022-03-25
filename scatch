@@ -1,0 +1,6 @@
+  
+        //Change any JSON Parameters from string to Json
+        propertyInfos.ToList().ForEach(pr=>
+        {
+            if(pr.GetCustomAttribute(JsonString)) ((SpannerParameter)cmd.Parameters[pr.Name]).SpannerDbType = SpannerDbType.Json;
+        });
