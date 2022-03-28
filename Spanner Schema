@@ -1,11 +1,6 @@
 --Cloud Spanner DB Schema
-CREATE TABLE GameSession (
-  SessionUUID STRING(36) NOT NULL,
-  StartTime TIMESTAMP NOT NULL,
-  EndTime TIMESTAMP NOT NULL,
-  SessionKey STRING(36) NOT NULL
-) PRIMARY KEY (SessionUUID);
 
+--Root user item. Describes a base gameing participant
 CREATE TABLE Player (
   PlayerUUID STRING(36) NOT NULL,
   Name STRING(255) NOT NULL,
@@ -14,37 +9,107 @@ CREATE TABLE Player (
   Preferences JSON
 )PRIMARY KEY (PlayerUUID);
 
+--Describes a start time and end time a game instance can be played by one or more players. 
+CREATE TABLE GameSession (
+  SessionUUID STRING(36) NOT NULL,
+  StartTime TIMESTAMP NOT NULL,
+  EndTime TIMESTAMP NOT NULL,
+  SessionKey STRING(36) NOT NULL
+) PRIMARY KEY (SessionUUID);
+
+--Describes the Currencies (Coins ex:VBucks) available to purchase
 CREATE TABLE Coin (
   CoinUUID STRING(36) NOT NULL,
   Name STRING(255) NOT NULL,
   IconURL STRING(255),
+  StartPrice FLOAT64 NOT NULL
 )PRIMARY KEY (CoinUUID);
 
-CREATE TABLE TradeOrder (
+--Describes the request of a user to trade coins 
+CREATE TABLE TradeOrder --need to interleave this table
+(
   SessionUUID STRING(36) NOT NULL,
   OrderUUID STRING(36)  NOT NULL,
-  CoinUUID STRING(36)  NOT NULL,
   PlayerUUID STRING(36) NOT NULL,
+  BuyCoinUUID STRING(36) NOT NULL,
+  SellCoinUUID STRING(36) NOT NULL,
+  BuyPrice FLOAT64 NOT NULL,
+  SellPrice FLOAT64 NOT NULL,
+  BuySize FLOAT64 NOT NULL,
+  SellSize FLOAT64 NOT NULL,  
   Placed TIMESTAMP NOT NULL,
   Ask BOOL NOT NULL,
-  Price FLOAT64 NOT NULL,
-  UnitSize FLOAT64 NOT NULL,
+  Market BOOL NOT NULL,
   Cancelled BOOL NOT NULL,
-  Filled BOOL NOT NULL
+  Filled BOOL NOT NULL,
+  CompletelyFilled BOOL NOT NULL
 )PRIMARY KEY (OrderUUID);
 
+
+--describes the aquistions of coins by a player via 
+--real currency purchases, trades, or grants from 
+--others.
 CREATE TABLE Trade (
   SessionUUID STRING(36) NOT NULL,
   TradeUUID STRING(36) NOT NULL,
   AskOrderUUID STRING(36) NOT NULL,
   BidOrderUUID STRING(36) NOT NULL,
-  CoinUUID STRING(36) NOT NULL,
   Booked TIMESTAMP NOT NULL,
-  Size FLOAT64 NOT NULL,
-  Price FLOAT64 NOT NULL
+  GrantFromSeller BOOL NOT NULL
 )PRIMARY KEY (TradeUUID);
+
+--Describes a players time in a game session (actively engaged)
+CREATE TABLE PlayerGameSession  --need to interleave this table
+(
+  PlayerUUID STRING(36) NOT NULL,
+  SessionUUID STRING(36) NOT NULL,
+  StartTime TIMESTAMP NOT NULL,
+  EndTime TIMESTAMP NOT NULL,
+  SessionScore int NOT NULL Defualt 0
+) PRIMARY KEY (PlayerUUID,SessionUUID); 
+
+-- Describes items available for purchase in the games
+-- Some items carry the Bundle BOOL to indicate that the item is actually
+-- a set of items in the table that can be found via relational keys in  
+--the ItemBundle table
+--items also carry a ValueCoinUUID which indicates the currency unit the
+--price was set in and the item is sold in. Coin (aka. Currency) trades should 
+--occur if the item is in a different ValueCoin. 
+CREATE TABLE GameItem  
+(
+  ItemUUID STRING(36) NOT NULL,
+  Bundle bool NOT NULL, 
+  Price FLOAT64 NOT NULL,
+  ValueCoinUUID STRING(36) NOT NULL,
+  UnitCountAvailable FLOAT64 NOT NULL,
+  AvailableTime TIMESTAMP NOT NULL,
+  ExpiresTime TIMESTAMP NOT NULL, 
+  Grantable BOOL NOT NULL --determines if an item can be granted 
+)PRIMARY KEY (ItemUUID); 
+
+--ItemContained in a Bundle
+CREATE TABLE ItemBundle
+(
+  BundleUUID STRING(36) NOT NULL,
+  ItemUUID STRING(36) NOT NULL
+)PRIMARY KEY (BundleUUID,ItemUUID); 
+
+
+CREATE TABLE PlayerItem --need to interleave this table
+(
+  PlayerUUID STRING(36) NOT NULL,
+  ItemUUID STRING(36) NOT NULL,
+  AquiredSessionUUID STRING(36) NOT NULL,
+  Price FLOAT64 NOT NULL,
+  PurchaseCoinUUID STRING(36) NOT NULL,
+  UnitCount FLOAT64 NOT NULL,
+  AquireTime TIMESTAMP NOT NULL,
+  ExpiresTime TIMESTAMP NOT NULL, 
+  Granted BOOL NOT NULL,
+  GrantorUUID STRING(36) NOT NULL
+)PRIMARY KEY (ItemUUID,PlayerUUID); 
 
 
 --Insert a starting value for the Coin
 INSERT Coin (CoinUUID, Name, IconURL)
-VALUES ('ad82761c-0e4d-4de9-9cd3-e2640cb5e6ef', 'BTC', 'https://bitcoin.org/img/icons/opengraph.png?1644775669')
+VALUES ('ad82761c-0e4d-4de9-9cd3-e2640cb5e6ef', 'BFC', 'https://bitcoin.org/img/icons/opengraph.png?1644775669')
