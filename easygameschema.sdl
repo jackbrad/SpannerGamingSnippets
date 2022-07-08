@@ -28,7 +28,7 @@ CREATE TABLE GameSession (
   Score NUMERIC NOT NULL,
   EventTimestamp TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
   EndTimestamp TIMESTAMP NOT NULL
-  ) PRIMARY KEY (PlayerID, StartTime DESC),
+  ) PRIMARY KEY (PlayerID, EventTimestamp DESC),
   INTERLEAVE IN PARENT Player ON DELETE CASCADE;
 
 CREATE TABLE PlayerLevel (
@@ -42,6 +42,5 @@ CREATE TABLE PlayerLevel (
   INTERLEAVE IN PARENT Player ON DELETE CASCADE;
 
 CREATE INDEX PlayerLevelbyGame  ON PlayerLevel(GameID, PlayerID)
-
 
 
