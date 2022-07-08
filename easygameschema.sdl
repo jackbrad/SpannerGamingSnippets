@@ -1,0 +1,47 @@
+Create Table Game
+(
+  GameID STRING(36) NOT NULL,
+  Name STRING(36) NOT NULL,
+  CreationTimestamp TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true)
+) PRIMARY KEY (GameID);
+
+Create Table Level
+(
+  GameID STRING(36) NOT NULL,
+  LevelID STRING(36) NOT NULL,
+  Level STRING(36) NOT NULL,
+  CreationTimestamp TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  Description String(Max) NOT NULL
+) PRIMARY KEY (GameID, LevelID),
+  INTERLEAVE IN PARENT Game ON DELETE CASCADE;
+
+CREATE TABLE Player (
+  PlayerID STRING(36) NOT NULL,
+  Name STRING(255) NOT NULL,
+  Location STRING(255),
+  CreationTimestamp TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true)
+)PRIMARY KEY (PlayerID);
+
+CREATE TABLE GameSession (
+  GameID STRING(36) NOT NULL,
+  PlayerID STRING(36) NOT NULL,
+  Score NUMERIC NOT NULL,
+  EventTimestamp TIMESTAMP NOT NULL OPTIONS (allow_commit_timestamp=true),
+  EndTimestamp TIMESTAMP NOT NULL
+  ) PRIMARY KEY (PlayerID, StartTime DESC),
+  INTERLEAVE IN PARENT Player ON DELETE CASCADE;
+
+CREATE TABLE PlayerLevel (
+  PlayerID STRING(36) NOT NULL,
+  LevelID  STRING(36) NOT NULL,
+  GameID  STRING(36) NOT NULL,
+  Level STRING(MAX) NOT NULL,
+  CONSTRAINT FK_GamePlayerLevel FOREIGN KEY (GameID)
+    REFERENCES Game(GameId),
+) PRIMARY KEY (PlayerID, LevelID),
+  INTERLEAVE IN PARENT Player ON DELETE CASCADE;
+
+CREATE INDEX PlayerLevelbyGame  ON PlayerLevel(GameID, PlayerID)
+
+
+
