@@ -42,5 +42,5 @@ CREATE TABLE PlayerLevel (
   INTERLEAVE IN PARENT Player ON DELETE CASCADE;
 
 CREATE INDEX PlayerLevelbyGame  ON PlayerLevel(GameID, PlayerID)
-
+ 
 
